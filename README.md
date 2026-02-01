@@ -1,6 +1,6 @@
 # headplane
 
-![Version: 0.1.0](https://img.shields.io/badge/Version-0.1.0-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 0.6.0](https://img.shields.io/badge/AppVersion-0.6.0-informational?style=flat-square)
+![Version: 0.1.40](https://img.shields.io/badge/Version-0.1.40-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 0.6.1](https://img.shields.io/badge/AppVersion-0.6.1-informational?style=flat-square)
 
 This helm chart deploys [Headplane](https://github.com/tale/headplane) + [Headscale](https://github.com/juanfont/headscale) and an embedded Tailscale relay in a kubernetes cluster.
 
@@ -9,21 +9,27 @@ This helm chart deploys [Headplane](https://github.com/tale/headplane) + [Headsc
 ### Prerequisites
 - Kubernetes cluster
 - Helm installed (`helm version`)
-- (Optional) OCI registry access for pulling images
+- Access to GitHub Container Registry (GHCR)
+
+Login to GHCR before installing:
+
+```sh
+helm registry login ghcr.io -u <your-github-username> -p <your-github-token>
+```
 
 ### Install the Chart
 ```sh
 # Install with default values
-helm install headplane oci://harbor.lag0.com.br/library/headplane
+helm install headplane oci://ghcr.io/drndos/headplane --version 0.1.40
 
 # Install with custom values
-helm install headplane oci://harbor.lag0.com.br/library/headplane -f values.yaml
+helm install headplane oci://ghcr.io/drndos/headplane --version 0.1.40 -f values.yaml
 
 ```
 
 ### Upgrade the Chart
 ```sh
-helm upgrade headplane oci://harbor.lag0.com.br/library/headplane
+helm upgrade headplane oci://ghcr.io/drndos/headplane --version 0.1.40
 ```
 
 * Some config changes may require manual pod restart to take place
@@ -47,7 +53,7 @@ helm uninstall headplane
 | headplane.config.server.host | string | `"0.0.0.0"` |  |
 | headplane.config.server.port | int | `3000` |  |
 | headplane.envFrom | list | `[]` |  |
-| headplane.image | string | `"ghcr.io/tale/headplane:0.6.0"` |  |
+| headplane.image | string | `"ghcr.io/tale/headplane:0.6.1"` |  |
 | headplane.oidc.client_id | string | `"PLACEHOLDER_USE_SECRET"` |  |
 | headplane.oidc.disable_api_key_login | bool | `true` |  |
 | headplane.oidc.enabled | bool | `false` |  |
@@ -86,7 +92,7 @@ helm uninstall headplane
 | headscale.config.prefixes.v6 | string | `"fd7a:115c:a1e0::/48"` |  |
 | headscale.config.server_url | string | `"https://vpn.example.com"` |  |
 | headscale.envFrom | list | `[]` |  |
-| headscale.image | string | `"headscale/headscale:0.26.1"` |  |
+| headscale.image | string | `"headscale/headscale:0.27.1"` |  |
 | headscale.oidc.client_id | string | `"YOUR_OIDC_CLIENT_ID_FOR_HEADSCALE"` |  |
 | headscale.oidc.enabled | bool | `false` |  |
 | headscale.oidc.issuer | string | `"https://your-oidc-issuer.com"` |  |
@@ -114,7 +120,7 @@ helm uninstall headplane
 | relay.config.login_server | string | `"https://vpn.example.com"` |  |
 | relay.config.routes | string | `"10.0.0.0/8"` |  |
 | relay.enabled | bool | `false` |  |
-| relay.image | string | `"ghcr.io/tailscale/tailscale:v1.80.3"` |  |
+| relay.image | string | `"ghcr.io/tailscale/tailscale:v1.92.5"` |  |
 | relay.pvc.accessModes[0] | string | `"ReadWriteOnce"` |  |
 | relay.pvc.enabled | bool | `false` |  |
 | relay.pvc.name | string | `"tailscale-relay-data"` |  |
